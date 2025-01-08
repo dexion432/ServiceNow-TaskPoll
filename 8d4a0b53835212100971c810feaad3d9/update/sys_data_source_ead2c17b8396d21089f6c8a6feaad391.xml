@@ -10,12 +10,17 @@
         <data_in_single_column>false</data_in_single_column>
         <data_loader><![CDATA[(function loadData(import_set_table, data_source, import_log, last_success_import_time, partition_info) {
 
-    /* global import_set_table, data_source, import_log, last_success_import_time, partition_info, global */
+
+gs.info('CSK ' + gs.getUserDisplayName() + ' ' + gs.getUserID());
+return;
+    /* global import_set_table, data_source, import_log, last_success_import_time, partition_info, global, gs */
     /* eslint no-undef: "error" */
-    var result = new global.KAIOIntegration().getRecords('incident', {
+    var result = new global.PollUtil().getRecords('incident', {
         limit: import_set_table.getMaximumRows(),
         updatedSince: import_set_table.getMaximumRows() == 20 ? '1970-01-01 12:00:00' : last_success_import_time
     });
+
+	// use https://developer.servicenow.com/dev.do#!/reference/api/xanadu/server/no-namespace/GlideImportSetTransformerAPI#GImpSetTrans-setMapID_S?navFilter=trans to call the specific transform map
 
     if (result.status != 'success') {
         import_log.error(result.message);
@@ -54,11 +59,10 @@
         <jdbc_password/>
         <jdbc_server/>
         <jdbc_user_name/>
-        <jdbcprobe_result_set_rows/>
         <jpath_root_node/>
         <last_run_database_field/>
         <last_run_datetime/>
-        <last_success_import_time/>
+        <last_success_import_time>2025-01-08 12:55:23</last_success_import_time>
         <ldap_target/>
         <ldapprobe_result_set_rows>200</ldapprobe_result_set_rows>
         <limit/>
@@ -96,14 +100,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2024-12-12 17:54:20</sys_created_on>
         <sys_id>ead2c17b8396d21089f6c8a6feaad391</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>Task Poll Incident</sys_name>
         <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
         <sys_policy/>
         <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
         <sys_update_name>sys_data_source_ead2c17b8396d21089f6c8a6feaad391</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-12-12 17:54:20</sys_updated_on>
+        <sys_updated_on>2025-01-08 13:03:20</sys_updated_on>
         <table_name/>
         <type>CUSTOM</type>
         <use_batch_import>false</use_batch_import>

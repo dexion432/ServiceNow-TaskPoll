@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="254f365483831210f6ed55e0deaad332" label="M2M ID" max_length="40" name="x_376096_tpoll_m2m_id" type="collection">
+        <element attributes="encode_utf8=false" label="Remote ID" max_length="32" name="local_id" reference="task" type="reference"/>
+        <element label="Source" max_length="150" name="source" reference_qual="parent=66fa0fd3839a521089f6c8a6feaad31a^EQ" reference_qual_condition="parent=66fa0fd3839a521089f6c8a6feaad31a^EQ" type="string"/>
+        <element attributes="encode_utf8=false" label="Local ID" max_length="32" name="remote_id" reference="task" type="reference"/>
+        <index name="index">
+            <element name="local_id"/>
+        </index>
+        <index name="index2">
+            <element name="remote_id"/>
+        </index>
+        <index name="index3">
+            <element name="source"/>
+        </index>
+    </element>
+</database>
