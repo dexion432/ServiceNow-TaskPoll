@@ -13,169 +13,212 @@
 /* global GlideRecord */
 /* eslint no-undef: "error" */
 var PollUtil = Class.create();
-PollUtil.syncAll = function () {
-	const aliasGr = new GlideRecord('sys_alias');
-	aliasGr.addQuery('parent.id', 'x_376096_tpoll.tpoll');
-	aliasGr.query();
-	while (aliasGr.next()) {
-		const pollUtil = new PollUtil(aliasGr.getUniqueValue());
-		const incidents = pollUtil.getRecords({ table: 'incident' });
-	}
+PollUtil.syncAll = function() {
+    const aliasGr = new GlideRecord('sys_alias');
+    //aliasGr.addQuery('parent.id', 'x_376096_tpoll.tpoll');
+	aliasGr.addQuery('sys_id', '66fa0fd3839a521089f6c8a6feaad31a');
+    aliasGr.query();
+    while (aliasGr.next()) {
+        const pollUtil = new PollUtil(aliasGr.getUniqueValue());
+        const incidents = pollUtil.getRecords({
+            table: 'incident'
+        });
+
+/*https://dev288390.service-now.com/images/icons/save.gifx
+        var importSet = new GlideRecord('sys_import_set');
+        importSet.short_description = 'Import set from scripted rest api';
+        importSet.table_name = importSetTableName;
+        var importSetID = importSet.insert();
+        var transformMapId = '<sys id of transform map>';
+        var transformer = new GlideImportSetTransformer();
+        transformer.setMapID(transformMapId);
+        transformer.transformAllMaps(importSet);
+		*/
+    }
 };
 PollUtil.prototype = {
-	initialize: function (connAliasSysID) {
-		this.connAliasSysID = connAliasSysID;
+    initialize: function(connAliasSysID) {
+        this.connAliasSysID = connAliasSysID;
         this.connInfo = new sn_cc.ConnectionInfoProvider().getConnectionInfo(connAliasSysID);
         this.connURL = this.connInfo.getAttribute('connection_url');
         if (!this.connURL.startsWith('/')) {
             this.connURL += '/';
         }
 
-		// set authentication info (oauth or basic auth)
-		const credentials = new sn_cc.StandardCredentialsProvider().getCredentialByAliasID(connAliasSysID);
-		const type = credentials.getAttribute('type');
-		if (type == 'oauth_2_0') {
-			const credSysID = credentials.getAttribute('sys_id');
-			const profileGr = new GlideRecord('oauth_requestor_profile');
-			profileGr.addQuery('requestor_context', 'oauth_2_0_credentials');
-			profileGr.addQuery('requestor_id', credSysID);
-			profileGr.setLimit(1);
-			profileGr.query();
-			if (profileGr.next()) {
-				this.oAuthInfo = {
-					authenticationProfile: {
-						type: 'oauth2',
-						profileId: profileGr.getValue('oauth_entity_profile') 
-					},
-					requestorProfile: {
-						requestorContext: 'oauth_2_0_credentials',
-						requestorId: credSysID
-					}
-				};
-			}
-		} else if (type == 'basic_auth') {
-			this.basicAuthInfo = {
-				username: credentials.getAttribute('user_name'),
-				password: credentials.getAttribute('password')
-			};
-		}
-	},
+        // set authentication info (oauth or basic auth)
+		connAliasSysID = '2b256d7c83cb1210f6ed55e0deaad3c1';
+        const credentials = new sn_cc.StandardCredentialsProvider().getCredentialByAliasID(connAliasSysID);
+        const type = credentials.getAttribute('type');
+        if (type == 'oauth_2_0') {
+            const credSysID = credentials.getAttribute('sys_id');
+            const profileGr = new GlideRecord('oauth_requestor_profile');
+            profileGr.addQuery('requestor_context', 'oauth_2_0_credentials');
+            profileGr.addQuery('requestor_id', credSysID);
+            profileGr.setLimit(1);
+            profileGr.query();
+            if (profileGr.next()) {
+                this.oAuthInfo = {
+                    authenticationProfile: {
+                        type: 'oauth2',
+                        profileId: profileGr.getValue('oauth_entity_profile')
+                    },
+                    requestorProfile: {
+                        requestorContext: 'oauth_2_0_credentials',
+                        requestorId: credSysID
+                    }
+                };
+            }
+        } else if (type == 'basic_auth') {
+            this.basicAuthInfo = {
+                username: credentials.getAttribute('user_name'),
+                password: credentials.getAttribute('password')
+            };
+        }
+    },
 
-	getRecords: function ({ table, query, limit }) {
-		var req = new sn_ws.RESTMessageV2();
-		req.setHttpMethod('POST');
-		req.setEndpoint(this.connURL + 'api/now/batch');
-		if (this.oAuthInfo) {
-			req.setAuthenticationProfile(this.authInfo.authenticationProfile.type, this.authInfo.authenticationProfile.profileId);
-			if (this.authInfo.requestorProfile) {
-				req.setRequestorProfile(this.authInfo.requestorProfile.requestorContext, this.authInfo.requestorProfile.requestorId);
-			}
-		} else if (this.basicAuthInfo) {
-			req.setBasicAuth(this.basicAuthInfo.username, this.basicAuthInfo.password);
-		}
+    getRecords: function({
+        table,
+        query,
+        limit
+    }) {
+        var req = new sn_ws.RESTMessageV2();
+        req.setHttpMethod('POST');
+		var ep = this.connURL + 'api/now/v1/batch';
+        req.setEndpoint(ep);
+		/*
+        if (this.oAuthInfo) {
+            req.setAuthenticationProfile(this.authInfo.authenticationProfile.type, this.authInfo.authenticationProfile.profileId);
+            if (this.authInfo.requestorProfile) {
+                req.setRequestorProfile(this.authInfo.requestorProfile.requestorContext, this.authInfo.requestorProfile.requestorId);
+            }
+        } else if (this.basicAuthInfo) {
+            req.setBasicAuth(this.basicAuthInfo.username, this.basicAuthInfo.password);
+        }
+		*/
+        req.setBasicAuth('admin', 'hDz/*9N2vjDY');
 
-		req.setRequestHeader('Accept', 'application/json');
-		req.setRequestHeader('Content-Type', 'application/json');
-		req.setRequestBody(JSON.stringify({
-			batch_request_id: 1,
-			rest_requests: [
-				this.prepareTableAPI({ id: 1, table: table, query: query, limit: limit }),
-				this.prepareTableAPI({ id: 1, table: 'sys_journal_field' }),
-				this.prepareTableAPI({ id: 2, table: 'sys_attachment', fields: ['sys_id'] })
-			]
-		}));
+        req.setRequestHeader('Accept', 'application/json');
+        req.setRequestHeader('Content-Type', 'application/json');
+        req.setRequestBody(JSON.stringify({
+            batch_request_id: 1,
+            rest_requests: [
+                this.prepareTableAPI({
+                    id: 1,
+                    table: table,
+                    query: query,
+                    limit: limit
+                }),
+                this.prepareTableAPI({
+                    id: 2,
+                    table: 'sys_journal_field'
+                }),
+                this.prepareTableAPI({
+                    id: 3,
+                    table: 'sys_attachment',
+                    fields: ['sys_id']
+                })
+            ]
+        }));
 
-		const resp = req.execute();
-		if (resp.haveError()) {
-			return {
-				status: 'error',
-				message: resp.getErrorMessage(),
-				code: resp.getErrorCode()
-			};
-		}
-		
-		const requests = JSON.parse(resp.getBody()).serviced_requests;
-		let incidents = requests.find(req => req.id == 1);
-		let journalFields = requests.find(req => req.id == 2);
-		let attachments = requests.find(req => req.id == 3);
-		if (incidents?.status_text != 'OK' || journalFields?.status_text != 'OK' || attachments?.status_text != 'OK') {
-			return {
-				status: 'error',
-				message: 'Failed to retrieve incidents, journal_fields or attachments'
-			};
-		}
+        const resp = req.execute();
+        if (resp.haveError()) {
+            return {
+                status: 'error',
+                message: resp.getErrorMessage(),
+                code: resp.getErrorCode()
+            };
+        }
 
-		incidents = gs.base64Decode(incidents.body);
-		const incMap = {};
-		incidents.forEach(inc => {
-			inc.attachments = [];
-			incMap[inc.sys_id] = inc;
-		});
+        const requests = JSON.parse(resp.getBody()).serviced_requests;
+        let incidents = requests.find(req => req.id == 1);
+        let journalFields = requests.find(req => req.id == 2);
+        let attachments = requests.find(req => req.id == 3);
+        if (incidents?.status_text != 'OK' || journalFields?.status_text != 'OK' || attachments?.status_text != 'OK') {
+            return {
+                status: 'error',
+                message: 'Failed to retrieve incidents, journal_fields or attachments'
+            };
+        }
 
-		journalFields = gs.base64Decode(journalFields.body);
-		journalFields.forEach(jf => {
-			const inc = incMap[jf.element_id];
-			if (inc) {
-				(inc[jf.element] ??= []).push(jf);
-			}
-		});
+		gs.info('CSK incidents.body ' + incidents.body);
+		gs.info('CSK incidents.body 2' + gs.base64Decode(incidents.body));
+        incidents = gs.base64Decode(incidents.body);
+        const incMap = {};
+        incidents.forEach(inc => {
+            inc.attachments = [];
+            incMap[inc.sys_id] = inc;
+        });
 
-		attachments = gs.base64Decode(attachments.body);
-		attachments.forEach(att => incidents.attachments.push(att));
+        journalFields = gs.base64Decode(journalFields.body);
+        journalFields.forEach(jf => {
+            const inc = incMap[jf.element_id];
+            if (inc) {
+                (inc[jf.element] ??= []).push(jf);
+            }
+        });
 
-		return {
-			status: 'success',
-			records: incidents
-		};
-	},
+        attachments = gs.base64Decode(attachments.body);
+        attachments.forEach(att => incidents.attachments.push(att));
 
-	prepareTableAPI: function ({ id, table, query, fields, limit }) {
-		const params = [];
-		if (query) {
-			params.push('sysparm_query=' + encodeURIComponent(query));
-		}
+        return {
+            status: 'success',
+            records: incidents
+        };
+    },
 
-		if (limit) {
-			params.push('sysparm_limit=' + limit);
-		}
+    prepareTableAPI: function({
+        id,
+        table,
+        query,
+        fields,
+        limit
+    }) {
+        const params = [];
+        if (query) {
+            params.push('sysparm_query=' + encodeURIComponent(query));
+        }
 
-		if (fields) {
-			params.push('sysparm_fields=' + encodeURIComponent(fields.join(',')));
-		}
+        if (limit) {
+            params.push('sysparm_limit=' + limit);
+        }
 
-		let url = '/api/now/table/' + table;
-		if (params.length) {
-			url += '?' + params.join('&');
-		}
+        if (fields) {
+            params.push('sysparm_fields=' + encodeURIComponent(fields.join(',')));
+        }
 
-		return {
-			id: id,
-			headers: [{
-				name: 'Content-Type',
-				value: 'application/json'
-			}, {
-				name: 'Accept',
-				value: 'application/json'
-			}],
-			url: url,
-			method: 'GET'
-		};
-	},
+        let url = '/api/now/table/' + table;
+        if (params.length) {
+            url += '?' + params.join('&');
+        }
 
-	type: 'PollUtil'
+        return {
+            id: id,
+            headers: [{
+                name: 'Content-Type',
+                value: 'application/json'
+            }, {
+                name: 'Accept',
+                value: 'application/json'
+            }],
+            url: url,
+            method: 'GET'
+        };
+    },
+
+    type: 'PollUtil'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>markus.kraus</sys_created_by>
         <sys_created_on>2025-01-08 12:55:10</sys_created_on>
         <sys_id>c8ed32d083831210f6ed55e0deaad30c</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>PollUtil</sys_name>
         <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
         <sys_policy/>
         <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
         <sys_update_name>sys_script_include_c8ed32d083831210f6ed55e0deaad30c</sys_update_name>
-        <sys_updated_by>markus.kraus</sys_updated_by>
-        <sys_updated_on>2025-01-08 17:50:06</sys_updated_on>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-09 20:45:36</sys_updated_on>
     </sys_script_include>
     <sys_es_latest_script action="INSERT_OR_UPDATE">
         <id>c8ed32d083831210f6ed55e0deaad30c</id>
