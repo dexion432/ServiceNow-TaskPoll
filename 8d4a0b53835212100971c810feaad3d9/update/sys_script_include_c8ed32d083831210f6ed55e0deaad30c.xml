@@ -16,24 +16,31 @@ var PollUtil = Class.create();
 PollUtil.syncAll = function() {
     const aliasGr = new GlideRecord('sys_alias');
     //aliasGr.addQuery('parent.id', 'x_376096_tpoll.tpoll');
-	aliasGr.addQuery('sys_id', '66fa0fd3839a521089f6c8a6feaad31a');
+    aliasGr.addQuery('sys_id', '66fa0fd3839a521089f6c8a6feaad31a');
     aliasGr.query();
     while (aliasGr.next()) {
         const pollUtil = new PollUtil(aliasGr.getUniqueValue());
+        /*
         const incidents = pollUtil.getRecords({
             table: 'incident'
         });
 
-/*https://dev288390.service-now.com/images/icons/save.gifx
-        var importSet = new GlideRecord('sys_import_set');
-        importSet.short_description = 'Import set from scripted rest api';
-        importSet.table_name = importSetTableName;
-        var importSetID = importSet.insert();
-        var transformMapId = '<sys id of transform map>';
-        var transformer = new GlideImportSetTransformer();
-        transformer.setMapID(transformMapId);
-        transformer.transformAllMaps(importSet);
+		gs.info('CSK incidents' + JSON.stringify(incidents) );
 		*/
+
+        gs.info("CSK items" + JSON.stringify(pollUtil.getItems()));
+
+
+        /*https://dev288390.service-now.com/images/icons/save.gifx
+                var importSet = new GlideRecord('sys_import_set');
+                importSet.short_description = 'Import set from scripted rest api';
+                importSet.table_name = importSetTableName;
+                var importSetID = importSet.insert();
+                var transformMapId = '<sys id of transform map>';
+                var transformer = new GlideImportSetTransformer();
+                transformer.setMapID(transformMapId);
+                transformer.transformAllMaps(importSet);
+        		*/
     }
 };
 PollUtil.prototype = {
@@ -41,12 +48,14 @@ PollUtil.prototype = {
         this.connAliasSysID = connAliasSysID;
         this.connInfo = new sn_cc.ConnectionInfoProvider().getConnectionInfo(connAliasSysID);
         this.connURL = this.connInfo.getAttribute('connection_url');
+		/*
         if (!this.connURL.startsWith('/')) {
             this.connURL += '/';
         }
+		*/
 
         // set authentication info (oauth or basic auth)
-		connAliasSysID = '2b256d7c83cb1210f6ed55e0deaad3c1';
+        connAliasSysID = '2b256d7c83cb1210f6ed55e0deaad3c1';
         const credentials = new sn_cc.StandardCredentialsProvider().getCredentialByAliasID(connAliasSysID);
         const type = credentials.getAttribute('type');
         if (type == 'oauth_2_0') {
@@ -76,16 +85,78 @@ PollUtil.prototype = {
         }
     },
 
+    getItems: function() {
+        let incidents = this.getRecords2("table/incident");
+        let incidentTasks = this.getRecords2("table/incident_task");
+        let attachments = this.getRecords2("attachment");
+        let journalFields = this.getRecords2("table/sys_journal_field");
+
+        return {
+            status: "success",
+            incidents: incidents,
+            incidentTasks: incidentTasks,
+            attachments: attachments,
+            journalFields: journalFields,
+        };
+    },
+
+    getRecords2: function(table, query, fields, limit) {
+		limit = 300;
+        let req = new sn_ws.RESTMessageV2();
+        req.setRequestHeader("Accept", "application/json");
+        req.setRequestHeader("Content-Type", "application/json");
+        req.setBasicAuth("admin", "hDz/*9N2vjDY");
+
+        let url = table;
+
+        const params = [];
+        if (query) {
+            params.push("sysparm_query=" + encodeURIComponent(query));
+        }
+
+        if (limit) {
+            params.push("sysparm_limit=" + limit);
+        }
+
+        if (fields) {
+            params.push("sysparm_fields=" + encodeURIComponent(fields.join(",")));
+        }
+
+        if (params.length) {
+            url += "?" + params.join("&");
+        }
+
+        
+
+		gs.info('CSK ' + this.connURL + '----' + url);
+        req.setHttpMethod('GET');
+        req.setEndpoint(this.connURL + url);
+
+        const resp = req.execute();
+        if (resp.haveError() || resp.getStatusCode() != "200") {
+            return {
+                status: "error",
+                message: resp.getErrorMessage(),
+                code: resp.getErrorCode(),
+            };
+        }
+        const respBody = resp.getBody();
+        const records = JSON.parse(respBody)?.result ?? [];
+
+		
+        return {
+            status: "success",
+            records: records,
+        };
+    },
+
     getRecords: function({
         table,
         query,
         limit
     }) {
-        var req = new sn_ws.RESTMessageV2();
-        req.setHttpMethod('POST');
-		var ep = this.connURL + 'api/now/v1/batch';
-        req.setEndpoint(ep);
-		/*
+        //get incidents
+        /*
         if (this.oAuthInfo) {
             req.setAuthenticationProfile(this.authInfo.authenticationProfile.type, this.authInfo.authenticationProfile.profileId);
             if (this.authInfo.requestorProfile) {
@@ -95,10 +166,38 @@ PollUtil.prototype = {
             req.setBasicAuth(this.basicAuthInfo.username, this.basicAuthInfo.password);
         }
 		*/
-        req.setBasicAuth('admin', 'hDz/*9N2vjDY');
+        limit = 10;
 
+        let incReq = this.prepareTableAPI({
+            id: 1,
+            table: table,
+            query: query,
+            limit: limit
+        });
+
+        let req = new sn_ws.RESTMessageV2();
         req.setRequestHeader('Accept', 'application/json');
         req.setRequestHeader('Content-Type', 'application/json');
+        req.setHttpMethod(incReq.method);
+
+        req.setBasicAuth('admin', 'hDz/*9N2vjDY');
+
+        let ep = this.connURL + incReq.url;
+        req.setEndpoint(ep);
+        gs.info('CSK POST to ' + ep);
+
+        const resp = req.execute();
+        if (resp.haveError() || resp.getStatusCode() != '200') {
+
+            return {
+                status: 'error',
+                message: resp.getErrorMessage(),
+                code: resp.getErrorCode()
+            };
+        }
+        const respBody = resp.getBody();
+        const incidents = JSON.parse(respBody)?.result ?? [];
+        /*
         req.setRequestBody(JSON.stringify({
             batch_request_id: 1,
             rest_requests: [
@@ -122,6 +221,7 @@ PollUtil.prototype = {
 
         const resp = req.execute();
         if (resp.haveError()) {
+
             return {
                 status: 'error',
                 message: resp.getErrorMessage(),
@@ -129,20 +229,27 @@ PollUtil.prototype = {
             };
         }
 
-        const requests = JSON.parse(resp.getBody()).serviced_requests;
+		let rb = resp.getBody();
+		gs.info('CSK RESP ' + rb );
+
+        const requests = JSON.parse(rb).serviced_requests;
         let incidents = requests.find(req => req.id == 1);
         let journalFields = requests.find(req => req.id == 2);
         let attachments = requests.find(req => req.id == 3);
-        if (incidents?.status_text != 'OK' || journalFields?.status_text != 'OK' || attachments?.status_text != 'OK') {
+
+		gs.info('CSK incidents.body ' + incidents.body);
+		gs.info('CSK incidents.body 2' + gs.base64Decode(incidents.body));
+
+        if (incidents?.status_text != 'OK' ) { // || journalFields?.status_text != 'OK' || attachments?.status_text != 'OK') {
             return {
                 status: 'error',
                 message: 'Failed to retrieve incidents, journal_fields or attachments'
             };
         }
 
-		gs.info('CSK incidents.body ' + incidents.body);
-		gs.info('CSK incidents.body 2' + gs.base64Decode(incidents.body));
-        incidents = gs.base64Decode(incidents.body);
+		gs.info('CSK incidents.body 3' + incidents.body);
+		gs.info('CSK incidents.body 4' + gs.base64Decode(incidents.body));
+        incidents = JSON.pars(gs.base64Decode(incidents.body));
         const incMap = {};
         incidents.forEach(inc => {
             inc.attachments = [];
@@ -159,6 +266,7 @@ PollUtil.prototype = {
 
         attachments = gs.base64Decode(attachments.body);
         attachments.forEach(att => incidents.attachments.push(att));
+		*/
 
         return {
             status: 'success',
@@ -211,14 +319,14 @@ PollUtil.prototype = {
         <sys_created_by>markus.kraus</sys_created_by>
         <sys_created_on>2025-01-08 12:55:10</sys_created_on>
         <sys_id>c8ed32d083831210f6ed55e0deaad30c</sys_id>
-        <sys_mod_count>13</sys_mod_count>
+        <sys_mod_count>30</sys_mod_count>
         <sys_name>PollUtil</sys_name>
         <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
         <sys_policy/>
         <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
         <sys_update_name>sys_script_include_c8ed32d083831210f6ed55e0deaad30c</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2025-01-09 20:45:36</sys_updated_on>
+        <sys_updated_on>2025-01-10 14:46:38</sys_updated_on>
     </sys_script_include>
     <sys_es_latest_script action="INSERT_OR_UPDATE">
         <id>c8ed32d083831210f6ed55e0deaad30c</id>
