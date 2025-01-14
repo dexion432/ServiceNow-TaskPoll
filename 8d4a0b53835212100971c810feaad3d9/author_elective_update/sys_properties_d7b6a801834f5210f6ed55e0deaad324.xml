@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="DELETE">
+        <choices/>
+        <description/>
+        <ignore_cache>true</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_376096_tpoll.glide.rest.batch.max.outputSize</name>
+        <read_roles/>
+        <suffix>glide.rest.batch.max.outputSize</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-10 09:10:33</sys_created_on>
+        <sys_id>d7b6a801834f5210f6ed55e0deaad324</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_376096_tpoll.glide.rest.batch.max.outputSize</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>sys_properties_d7b6a801834f5210f6ed55e0deaad324</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-10 09:10:33</sys_updated_on>
+        <type>integer</type>
+        <value>25</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="DELETE" query="documentkey=d7b6a801834f5210f6ed55e0deaad324"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</application>
+        <file_path/>
+        <instance_id>600a1eb5ff6052d4c812f8e4fc4fd984</instance_id>
+        <instance_name>dev288390</instance_name>
+        <name>sys_properties_d7b6a801834f5210f6ed55e0deaad324</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties"><sys_properties action="INSERT_OR_UPDATE"><choices/><description/><ignore_cache>true</ignore_cache><is_private>false</is_private><name>x_376096_tpoll.glide.rest.batch.max.outputSize</name><read_roles/><suffix>glide.rest.batch.max.outputSize</suffix><sys_class_name>sys_properties</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-01-10 09:10:33</sys_created_on><sys_id>d7b6a801834f5210f6ed55e0deaad324</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_376096_tpoll.glide.rest.batch.max.outputSize</sys_name><sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package><sys_policy/><sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope><sys_update_name>sys_properties_d7b6a801834f5210f6ed55e0deaad324</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-01-10 09:10:33</sys_updated_on><type>integer</type><value>25</value><write_roles/></sys_properties><sys_translated_text action="delete_multiple" query="documentkey=d7b6a801834f5210f6ed55e0deaad324"/></record_update>]]></payload>
+        <payload_hash>692373136</payload_hash>
+        <record_name>x_376096_tpoll.glide.rest.batch.max.outputSize</record_name>
+        <reverted_from/>
+        <source>227009a683321210f6ed55e0deaad3e9</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-10 09:10:33</sys_created_on>
+        <sys_id>86c6a801834f5210f6ed55e0deaad3dd</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1944f7ac6650000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-10 09:10:33</sys_updated_on>
+        <type>System Property</type>
+        <update_guid>4ac6a8015a4f521090d5c0982fe984dc</update_guid>
+        <update_guid_history>4ac6a8015a4f521090d5c0982fe984dc:692373136</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-10 09:11:50</sys_created_on>
+        <sys_db_object display_value="" name="sys_properties">sys_properties</sys_db_object>
+        <sys_id>232b98ed8cd6410696d1a48b05c17744</sys_id>
+        <sys_metadata>d7b6a801834f5210f6ed55e0deaad324</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_376096_tpoll.glide.rest.batch.max.outputSize</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_scope_delete display_value="">8bc7187944fb441dbee622f3f0632e99</sys_scope_delete>
+        <sys_update_name>sys_properties_d7b6a801834f5210f6ed55e0deaad324</sys_update_name>
+        <sys_update_version display_value="sys_properties_d7b6a801834f5210f6ed55e0deaad324">86c6a801834f5210f6ed55e0deaad3dd</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-10 09:11:50</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

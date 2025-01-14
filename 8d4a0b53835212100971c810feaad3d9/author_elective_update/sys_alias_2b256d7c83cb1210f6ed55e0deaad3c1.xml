@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_alias">
+    <sys_alias action="DELETE">
+        <configuration_template/>
+        <connection_type>http_connection</connection_type>
+        <id>x_376096_tpoll.admincredalias</id>
+        <is_internal>false</is_internal>
+        <multiple_connections>false</multiple_connections>
+        <name>admincredalias</name>
+        <parent/>
+        <retry_policy display_value="Default HTTP Retry Policy">ef751ff07301330025d71afe2ff6a7f9</retry_policy>
+        <sys_class_name>sys_alias</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-09 19:04:56</sys_created_on>
+        <sys_id>2b256d7c83cb1210f6ed55e0deaad3c1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_376096_tpoll.admincredalias</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>sys_alias_2b256d7c83cb1210f6ed55e0deaad3c1</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-09 19:04:56</sys_updated_on>
+        <type>credential</type>
+    </sys_alias>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</application>
+        <file_path/>
+        <instance_id>600a1eb5ff6052d4c812f8e4fc4fd984</instance_id>
+        <instance_name>dev288390</instance_name>
+        <name>sys_alias_2b256d7c83cb1210f6ed55e0deaad3c1</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_alias"><sys_alias action="INSERT_OR_UPDATE"><configuration_template/><connection_type>http_connection</connection_type><id>x_376096_tpoll.admincredalias</id><is_internal>false</is_internal><multiple_connections>false</multiple_connections><name>admincredalias</name><parent/><retry_policy display_value="Default HTTP Retry Policy">ef751ff07301330025d71afe2ff6a7f9</retry_policy><sys_class_name>sys_alias</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-01-09 19:04:56</sys_created_on><sys_id>2b256d7c83cb1210f6ed55e0deaad3c1</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_376096_tpoll.admincredalias</sys_name><sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package><sys_policy/><sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope><sys_update_name>sys_alias_2b256d7c83cb1210f6ed55e0deaad3c1</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-01-09 19:04:56</sys_updated_on><type>credential</type></sys_alias></record_update>]]></payload>
+        <payload_hash>-720198280</payload_hash>
+        <record_name>x_376096_tpoll.admincredalias</record_name>
+        <reverted_from/>
+        <source>227009a683321210f6ed55e0deaad3e9</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-09 19:04:56</sys_created_on>
+        <sys_id>c335e5bc83cb1210f6ed55e0deaad30f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1944c7494b90000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-09 19:04:56</sys_updated_on>
+        <type>Connection &amp; Credential Aliases</type>
+        <update_guid>c735e5bc9dcb12109da03acc5aa4260e</update_guid>
+        <update_guid_history>c735e5bc9dcb12109da03acc5aa4260e:-720198280</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-13 07:53:29</sys_created_on>
+        <sys_db_object display_value="" name="sys_alias">sys_alias</sys_db_object>
+        <sys_id>3224da37152a4b08911f3917368fd440</sys_id>
+        <sys_metadata>2b256d7c83cb1210f6ed55e0deaad3c1</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_376096_tpoll.admincredalias</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_scope_delete display_value="">8bc7187944fb441dbee622f3f0632e99</sys_scope_delete>
+        <sys_update_name>sys_alias_2b256d7c83cb1210f6ed55e0deaad3c1</sys_update_name>
+        <sys_update_version display_value="sys_alias_2b256d7c83cb1210f6ed55e0deaad3c1">c335e5bc83cb1210f6ed55e0deaad30f</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-13 07:53:29</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
