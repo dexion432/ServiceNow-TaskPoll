@@ -238,6 +238,20 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>source</element>
+            <position>17</position>
+            <sys_created_by>markus.kraus</sys_created_by>
+            <sys_created_on>2025-01-15 07:30:18</sys_created_on>
+            <sys_id>cacf39a68303d210f6ed55e0deaad3d2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_376096_tpoll_task_poll_int_incident" sys_domain="global" view="Default view">bfea087083471210f6ed55e0deaad38a</sys_ui_section>
+            <sys_updated_by>markus.kraus</sys_updated_by>
+            <sys_updated_on>2025-01-15 07:30:18</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>

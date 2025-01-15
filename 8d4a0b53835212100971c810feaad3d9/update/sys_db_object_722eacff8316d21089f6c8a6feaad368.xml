@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_object">
     <sys_db_object action="INSERT_OR_UPDATE">
-        <access/>
+        <access>public</access>
         <actions_access>false</actions_access>
         <alter_access>false</alter_access>
         <caller_access/>
@@ -17,19 +17,19 @@
         <provider_class/>
         <read_access>true</read_access>
         <scriptable_table>false</scriptable_table>
-        <super_class display_value="Import Set Row" name="sys_import_set_row">8ad507d3d12302104f34ba60d8b7c10a</super_class>
+        <super_class display_value="Import Set Row" name="sys_import_set_row">42cf07e0dc1212104f34465061b06a2d</super_class>
         <sys_class_name>sys_db_object</sys_class_name>
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2024-12-12 15:59:02</sys_created_on>
         <sys_id>722eacff8316d21089f6c8a6feaad368</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>Tpoll Task Poll Int Incident</sys_name>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Task Poll INT Incident</sys_name>
         <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
         <sys_policy/>
         <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
         <sys_update_name>sys_db_object_722eacff8316d21089f6c8a6feaad368</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-12-12 15:59:02</sys_updated_on>
+        <sys_updated_by>markus.kraus</sys_updated_by>
+        <sys_updated_on>2025-01-15 07:30:19</sys_updated_on>
         <update_access>false</update_access>
         <user_role/>
         <ws_access>true</ws_access>
