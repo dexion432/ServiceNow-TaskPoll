@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="INSERT_OR_UPDATE">
+        <operation>execute</operation>
+        <source_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>Keri.Csaba</sys_created_by>
+        <sys_created_on>2025-01-15 12:32:46</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>f8050bae878f1e108b4c31930cbb35ba</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>SPEntryPage</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>sys_scope_privilege_f8050bae878f1e108b4c31930cbb35ba</sys_update_name>
+        <sys_updated_by>Keri.Csaba</sys_updated_by>
+        <sys_updated_on>2025-01-15 12:32:46</sys_updated_on>
+        <target_name>SPEntryPage</target_name>
+        <target_scope display_value="Global">global</target_scope>
+        <target_type>sys_script_include</target_type>
+    </sys_scope_privilege>
+</record_update>
