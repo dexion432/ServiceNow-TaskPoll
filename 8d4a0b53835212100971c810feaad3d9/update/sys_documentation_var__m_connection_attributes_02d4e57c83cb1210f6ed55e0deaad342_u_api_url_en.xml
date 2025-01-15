@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="u_api_url" label="API URL" language="en" table="var__m_connection_attributes_02d4e57c83cb1210f6ed55e0deaad342">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>u_api_url</element>
+            <help/>
+            <hint/>
+            <label>API URL</label>
+            <language>en</language>
+            <name>var__m_connection_attributes_02d4e57c83cb1210f6ed55e0deaad342</name>
+            <plural>API URL</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2025-01-09 19:03:22</sys_created_on>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>API URL</sys_name>
+            <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+            <sys_update_name>sys_documentation_var__m_connection_attributes_02d4e57c83cb1210f6ed55e0deaad342_u_api_url_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2025-01-09 19:03:22</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

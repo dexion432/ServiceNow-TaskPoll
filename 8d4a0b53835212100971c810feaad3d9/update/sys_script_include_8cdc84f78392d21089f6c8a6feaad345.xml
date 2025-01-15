@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_376096_tpoll.ChangeNotifier</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>Sends a push notification to the other instance when an incident or incident_task (relevant to the other instance) changes. &#13;
+The method is triggered in BRs. </description>
+        <mobile_callable>false</mobile_callable>
+        <name>ChangeNotifier</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[/* global Class, sn_cc, sn_ws, gs, XMLDocument2, GlideRecord */
+/* eslint no-undef: "error" */
+var ChangeNotifier = Class.create();
+ChangeNotifier.prototype = {
+    initialize: function() {
+        var connAliasSysID = '66fa0fd3839a521089f6c8a6feaad31a'; // x_376096_tpoll.tpoll
+        this.connInfo = new sn_cc.ConnectionInfoProvider().getConnectionInfo(connAliasSysID);
+        this.connURL = this.connInfo.getAttribute('connection_url');
+        if (!this.connURL.startsWith('/')) {
+            this.connURL += '/';
+        }
+		var extendedAttributes = this.connInfo.getExtendedAttributes();
+		this.apiUrl = extendedAttributes.u_api_url;
+    },
+
+	/**
+	 * @param {GlideRecordGenerated & task} taskGr
+	 */
+	notifyTask: function (taskGr, operation) {
+		var req = new sn_ws.RESTMessageV2();
+		req.setHttpMethod('POST');
+		req.setEndpoint(this.connURL + this.apiUrl + '?table=' + taskGr.getTableName() + '&operation=' + operation);
+		req.setBasicAuth(this.connInfo.getCredentialAttribute('user_name'), this.connInfo.getCredentialAttribute('password'));
+		req.setRequestHeader('Accept', 'application/json');
+		req.setRequestHeader('Content-Type','application/json');
+		req.setRequestBody(JSON.stringify({
+			table: taskGr.getTableName(),
+			sys_id: taskGr.getUniqueValue(),
+			operation: operation
+		}));
+		req.setEccParameter('task_operation', operation);
+		req.setEccParameter('task_table', taskGr.getTableName());
+		req.setEccParameter('task_sys_id', taskGr.getUniqueValue());
+		req.setEccTopic('tpoll');
+		req.executeAsync();
+	},
+
+	/**
+	 * @param {GlideRecordGenerated & ecc_queue} eccGr
+	 * @return {{status: ('error'|'success'), message: string}}
+	 */
+	handleNotifyResponse: function (eccGr) {
+		var result = {
+			status: 'error',
+			message: ''
+		};
+
+		var requestXML = new XMLDocument2();
+		requestXML.parseXML(eccGr.response_to.payload);
+
+		var operation = requestXML.getNode('//parameter[@name="task_operation"]').getAttribute('value');
+		if (operation == 'insert' || operation=="update") {
+			var taskTable = requestXML.getNode('//parameter[@name="task_table"]').getAttribute('value');
+			var taskSysID = requestXML.getNode('//parameter[@name="task_sys_id"]').getAttribute('value');
+
+			var taskGr = new GlideRecord(taskTable);
+			taskGr.addQuery('sys_id', taskSysID);
+			taskGr.setLimit(1);
+			taskGr.query();
+			if (taskGr.next()) {
+				var responseXML = new XMLDocument2();
+				responseXML.parseXML(eccGr.payload);
+				try {
+					var reqResult = JSON.parse(responseXML.getNodeText('/results/result/output'));
+					if (reqResult.error) {
+						var error = reqResult.error;
+						taskGr.work_notes += '[ERROR] ' + error.message + '\n' + error.details + '\n' + JSON.stringify(error);
+					} else if (reqResult.result) {
+						var record = reqResult.result;
+						var recordURL = this.connURL + 'nav_to.do?uri=' + record.sys_class_name + '.do%3Fsys_id%3Dsys_id=' + record.sys_id;
+						taskGr.correlation_id = 'bedag:' + record.sys_id;
+						taskGr.correlation_display = record.number;
+						taskGr.work_notes += 'BEDAG: [code]<a target="_blank" href="' + recordURL + '">' + record.number + '</a>[/code]';
+					} else {
+						taskGr.work_notes += 'Unexpected Result:\n' + JSON.stringify(reqResult, null, 2);
+					}
+
+					if (taskGr.update()) {
+						result.status = 'success';
+					} else {
+						result.message = 'Failed to update task ' + taskTable + ':' + taskSysID;
+					}
+				} catch (e) {
+					result.message = 'Failed to parse response, JSON expected (' + e + ')';
+				}
+			} else {
+				result.message = 'Failed to lookup task ' + taskTable + ':' + taskSysID;
+			}
+		} else {
+			result.status = 'success';
+		}
+
+		return result;
+	},
+
+    type: 'ChangeNotifier'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-12-12 15:07:44</sys_created_on>
+        <sys_id>8cdc84f78392d21089f6c8a6feaad345</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>ChangeNotifier</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>sys_script_include_8cdc84f78392d21089f6c8a6feaad345</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-08 11:43:53</sys_updated_on>
+    </sys_script_include>
+    <sys_es_latest_script action="INSERT_OR_UPDATE">
+        <id>8cdc84f78392d21089f6c8a6feaad345</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-12-12 15:07:43</sys_created_on>
+        <sys_id>036260738316d21089f6c8a6feaad387</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-12-12 15:07:43</sys_updated_on>
+        <table>sys_script_include</table>
+        <use_es_latest>true</use_es_latest>
+    </sys_es_latest_script>
+</record_update>

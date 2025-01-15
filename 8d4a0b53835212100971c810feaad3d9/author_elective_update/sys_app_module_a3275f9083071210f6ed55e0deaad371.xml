@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_module">
+    <sys_app_module action="DELETE">
+        <active>true</active>
+        <application display_value="Import Test target">e3275b9083071210f6ed55e0deaad389</application>
+        <assessment/>
+        <device_type/>
+        <filter/>
+        <hint/>
+        <homepage/>
+        <image/>
+        <link_type>LIST</link_type>
+        <map_page/>
+        <mobile_title>Import Test targets</mobile_title>
+        <mobile_view_name>Mobile</mobile_view_name>
+        <name>x_376096_tpoll_import_test_target</name>
+        <order/>
+        <override_menu_roles>false</override_menu_roles>
+        <query/>
+        <report/>
+        <require_confirmation>true</require_confirmation>
+        <roles>admin</roles>
+        <sys_class_name>sys_app_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-08 14:05:49</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>a3275f9083071210f6ed55e0deaad371</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Import Test targets</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>sys_app_module_a3275f9083071210f6ed55e0deaad371</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-08 14:05:49</sys_updated_on>
+        <timeline_page/>
+        <title>Import Test targets</title>
+        <uncancelable>false</uncancelable>
+        <view_name/>
+        <window_name/>
+    </sys_app_module>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</application>
+        <file_path/>
+        <instance_id>600a1eb5ff6052d4c812f8e4fc4fd984</instance_id>
+        <instance_name>dev288390</instance_name>
+        <name>sys_app_module_a3275f9083071210f6ed55e0deaad371</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_module"><sys_app_module action="INSERT_OR_UPDATE"><active>true</active><application display_value="Import Test target">e3275b9083071210f6ed55e0deaad389</application><assessment/><device_type/><filter/><hint/><homepage/><image/><link_type>LIST</link_type><map_page/><mobile_title>Import Test targets</mobile_title><mobile_view_name>Mobile</mobile_view_name><name>x_376096_tpoll_import_test_target</name><order/><override_menu_roles>false</override_menu_roles><query/><report/><require_confirmation>true</require_confirmation><roles>admin</roles><sys_class_name>sys_app_module</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-01-08 14:05:49</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>a3275f9083071210f6ed55e0deaad371</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Import Test targets</sys_name><sys_overrides/><sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package><sys_policy/><sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope><sys_update_name>sys_app_module_a3275f9083071210f6ed55e0deaad371</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-01-08 14:05:49</sys_updated_on><timeline_page/><title>Import Test targets</title><uncancelable>false</uncancelable><view_name/><window_name/></sys_app_module></record_update>]]></payload>
+        <payload_hash>-718412107</payload_hash>
+        <record_name>Import Test targets</record_name>
+        <reverted_from/>
+        <source>c5fa221c83031210f6ed55e0deaad39c</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-08 14:05:49</sys_created_on>
+        <sys_id>ef275f9083071210f6ed55e0deaad374</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>194463c60610000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-08 14:05:49</sys_updated_on>
+        <type>Module</type>
+        <update_guid>a3275f90e1071210abe0dff0a6de5574</update_guid>
+        <update_guid_history>a3275f90e1071210abe0dff0a6de5574:-718412107</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Import Test targets">3de15da0834f1210f6ed55e0deaad38b</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-08 23:02:00</sys_created_on>
+        <sys_db_object display_value="" name="sys_app_module">sys_app_module</sys_db_object>
+        <sys_id>10605367d1b146e28385dce17017a081</sys_id>
+        <sys_metadata>a3275f9083071210f6ed55e0deaad371</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Import Test targets</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_scope_delete display_value="">8bc7187944fb441dbee622f3f0632e99</sys_scope_delete>
+        <sys_update_name>sys_app_module_a3275f9083071210f6ed55e0deaad371</sys_update_name>
+        <sys_update_version display_value="sys_app_module_a3275f9083071210f6ed55e0deaad371">ef275f9083071210f6ed55e0deaad374</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-08 23:02:00</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
