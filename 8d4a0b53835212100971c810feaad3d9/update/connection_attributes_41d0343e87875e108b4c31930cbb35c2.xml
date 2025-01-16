@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="connection_attributes">
+    <connection_attributes action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <array>false</array>
+        <attributes/>
+        <audit>false</audit>
+        <calculation>(function calculatedFieldValue(current) {
+
+	// Add your code here
+	return '';  // return the calculated value
+
+})(current);</calculation>
+        <choice/>
+        <choice_field/>
+        <choice_table/>
+        <column_label>POD Fields</column_label>
+        <comments/>
+        <create_roles/>
+        <default_value/>
+        <defaultsort/>
+        <delete_roles/>
+        <dependent/>
+        <dependent_on_field/>
+        <display>false</display>
+        <dynamic_creation>false</dynamic_creation>
+        <dynamic_creation_script/>
+        <dynamic_default_value/>
+        <dynamic_ref_qual/>
+        <element>u_pod_fields</element>
+        <element_reference>false</element_reference>
+        <foreign_database/>
+        <formula/>
+        <function_definition/>
+        <function_field>false</function_field>
+        <help/>
+        <hint/>
+        <internal_type display_value="">glide_list</internal_type>
+        <label>POD Fields</label>
+        <mandatory>false</mandatory>
+        <max_length>4000</max_length>
+        <model display_value="x_376096_tpoll.tpoll">66fa0fd3839a521089f6c8a6feaad31a</model>
+        <model_id>66fa0fd3839a521089f6c8a6feaad31a</model_id>
+        <model_table/>
+        <name>var__m_connection_attributes_66fa0fd3839a521089f6c8a6feaad31a</name>
+        <next_element/>
+        <order>100</order>
+        <primary>false</primary>
+        <read_only>false</read_only>
+        <read_roles/>
+        <reference display_value="" name="sys_dictionary">sys_dictionary</reference>
+        <reference_cascade_rule/>
+        <reference_floats>false</reference_floats>
+        <reference_key/>
+        <reference_qual>name=x_376096_tpoll_int_incident^elementSTARTSWITHu_^ORelementSTARTSWITHx_^EQ</reference_qual>
+        <reference_qual_condition table="sys_dictionary">name=x_376096_tpoll_int_incident^elementSTARTSWITHu_^ORelementSTARTSWITHx_^EQ<item endquery="false" field="name" goto="false" newquery="false" operator="=" or="false" value="x_376096_tpoll_int_incident"/>
+            <item endquery="false" field="element" goto="false" newquery="false" operator="STARTSWITH" or="false" value="u_"/>
+            <item endquery="false" field="element" goto="false" newquery="false" operator="STARTSWITH" or="true" value="x_"/>
+            <item endquery="true" field="" goto="false" newquery="false" operator="=" or="false" value=""/>
+        </reference_qual_condition>
+        <reference_type/>
+        <spell_check>false</spell_check>
+        <staged>false</staged>
+        <sys_class_name>connection_attributes</sys_class_name>
+        <sys_created_by>markus.kraus</sys_created_by>
+        <sys_created_on>2025-01-15 20:35:57</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>41d0343e87875e108b4c31930cbb35c2</sys_id>
+        <sys_name>POD Fields</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>connection_attributes_41d0343e87875e108b4c31930cbb35c2</sys_update_name>
+        <sys_updated_by>markus.kraus</sys_updated_by>
+        <sys_updated_on>2025-01-16 09:26:24</sys_updated_on>
+        <table_reference>false</table_reference>
+        <text_index>false</text_index>
+        <unique>false</unique>
+        <use_dependent_field>false</use_dependent_field>
+        <use_dynamic_default>false</use_dynamic_default>
+        <use_reference_qualifier>simple</use_reference_qualifier>
+        <virtual>false</virtual>
+        <virtual_type>script</virtual_type>
+        <widget/>
+        <write_roles/>
+        <xml_view>false</xml_view>
+    </connection_attributes>
+</record_update>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_module">
+    <sys_app_module action="DELETE">
+        <active>true</active>
+        <application display_value="System Import Sets">import_sets</application>
+        <assessment/>
+        <device_type/>
+        <filter/>
+        <hint/>
+        <homepage/>
+        <image/>
+        <link_type>LIST</link_type>
+        <map_page/>
+        <mobile_title>Task Poll INT Incident</mobile_title>
+        <mobile_view_name>Mobile</mobile_view_name>
+        <name>x_376096_tpoll_task_poll_int_incident</name>
+        <order>1100</order>
+        <override_menu_roles>false</override_menu_roles>
+        <query/>
+        <report/>
+        <require_confirmation>true</require_confirmation>
+        <roles/>
+        <sys_class_name>sys_app_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-08 12:53:35</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>25a683dc83831210f6ed55e0deaad31b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Task Poll INT Incident</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>sys_app_module_25a683dc83831210f6ed55e0deaad31b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-08 12:53:35</sys_updated_on>
+        <timeline_page/>
+        <title>Task Poll INT Incident</title>
+        <uncancelable>false</uncancelable>
+        <view_name/>
+        <window_name/>
+    </sys_app_module>
+<sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</application>
+        <comments/>
+        <file_path/>
+        <instance_id>fef3bf46fd4ec5c4bc668279a1340be4</instance_id>
+        <instance_name>beitsmsentw</instance_name>
+        <name>sys_app_module_25a683dc83831210f6ed55e0deaad31b</name>
+        <order/>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_module">
+    <sys_app_module action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <application display_value="System Import Sets">import_sets</application>
+        <assessment/>
+        <device_type/>
+        <filter/>
+        <hint/>
+        <homepage/>
+        <image/>
+        <link_type>LIST</link_type>
+        <map_page/>
+        <mobile_title>Task Poll INT Incident</mobile_title>
+        <mobile_view_name>Mobile</mobile_view_name>
+        <name>x_376096_tpoll_task_poll_int_incident</name>
+        <order>1100</order>
+        <override_menu_roles>false</override_menu_roles>
+        <query/>
+        <report/>
+        <require_confirmation>true</require_confirmation>
+        <roles/>
+        <sys_class_name>sys_app_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-08 12:53:35</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>25a683dc83831210f6ed55e0deaad31b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Task Poll INT Incident</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>sys_app_module_25a683dc83831210f6ed55e0deaad31b</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-08 12:53:35</sys_updated_on>
+        <timeline_page/>
+        <title>Task Poll INT Incident</title>
+        <uncancelable>false</uncancelable>
+        <view_name/>
+        <window_name/>
+    </sys_app_module>
+</record_update>]]></payload>
+        <payload_hash>-974712241</payload_hash>
+        <record_name>Task Poll INT Incident</record_name>
+        <reverted_from/>
+        <source>2d6316aa87cb1e108b4c31930cbb356e</source>
+        <source_table>sys_upgrade_history</source_table>
+        <state>previous</state>
+        <sys_created_by>Keri.Csaba</sys_created_by>
+        <sys_created_on>2025-01-15 08:56:08</sys_created_on>
+        <sys_id>2763d6aa87cb1e108b4c31930cbb3557</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>194692d5f370000001</sys_recorded_at>
+        <sys_updated_by>Keri.Csaba</sys_updated_by>
+        <sys_updated_on>2025-01-15 08:56:08</sys_updated_on>
+        <type>Module</type>
+        <update_guid>e363d6aa8dcb1e1073e28a3fbd8de457</update_guid>
+        <update_guid_history>e363d6aa8dcb1e1073e28a3fbd8de457:-974712241</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Record deleted 16.01.2025 14:09:24">d3f61c8b870b9e108b4c31930cbb35f0</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-16 13:09:24</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_db_object display_value="" name="sys_app_module">sys_app_module</sys_db_object>
+        <sys_id>00de62b607df45a183bb2922475ec0b9</sys_id>
+        <sys_metadata>25a683dc83831210f6ed55e0deaad31b</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Task Poll INT Incident</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_scope_delete display_value="">8bc7187944fb441dbee622f3f0632e99</sys_scope_delete>
+        <sys_update_name>sys_app_module_25a683dc83831210f6ed55e0deaad31b</sys_update_name>
+        <sys_update_version display_value="sys_app_module_25a683dc83831210f6ed55e0deaad31b">2763d6aa87cb1e108b4c31930cbb3557</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-16 13:09:24</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

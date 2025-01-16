@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_dictionary action="INSERT_OR_UPDATE" element="local_id" table="x_376096_tpoll_m2m_id">
+    <sys_dictionary action="INSERT_OR_UPDATE" element="remote_sys_id" table="x_376096_tpoll_int_incident">
         <active>true</active>
         <array>false</array>
-        <attributes>encode_utf8=false</attributes>
+        <attributes/>
         <audit>false</audit>
-        <calculation/>
-        <choice>0</choice>
+        <calculation>(function calculatedFieldValue(current) {
+
+	// Add your code here
+	return '';  // return the calculated value
+
+})(current);</calculation>
+        <choice/>
         <choice_field/>
         <choice_table/>
-        <column_label>Local ID</column_label>
+        <column_label>Remote Sys ID</column_label>
         <comments/>
         <create_roles/>
         <default_value/>
@@ -21,7 +26,7 @@
         <dynamic_creation_script/>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <element>local_id</element>
+        <element>remote_sys_id</element>
         <element_reference>false</element_reference>
         <foreign_database/>
         <formula/>
@@ -29,8 +34,8 @@
         <function_field>false</function_field>
         <internal_type display_value="String">string</internal_type>
         <mandatory>false</mandatory>
-        <max_length>150</max_length>
-        <name>x_376096_tpoll_m2m_id</name>
+        <max_length>32</max_length>
+        <name>x_376096_tpoll_int_incident</name>
         <next_element/>
         <primary>false</primary>
         <read_only>false</read_only>
@@ -46,16 +51,16 @@
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>markus.kraus</sys_created_by>
-        <sys_created_on>2025-01-08 12:21:24</sys_created_on>
+        <sys_created_on>2025-01-16 09:19:24</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
-        <sys_name>Local ID</sys_name>
+        <sys_name>Remote Sys ID</sys_name>
         <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
-        <sys_update_name>sys_dictionary_x_376096_tpoll_m2m_id_local_id</sys_update_name>
-        <sys_updated_by>Keri.Csaba</sys_updated_by>
-        <sys_updated_on>2025-01-16 14:00:57</sys_updated_on>
+        <sys_update_name>sys_dictionary_x_376096_tpoll_int_incident_remote_sys_id</sys_update_name>
+        <sys_updated_by>markus.kraus</sys_updated_by>
+        <sys_updated_on>2025-01-16 09:19:24</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>
@@ -63,7 +68,7 @@
         <use_dynamic_default>false</use_dynamic_default>
         <use_reference_qualifier>simple</use_reference_qualifier>
         <virtual>false</virtual>
-        <virtual_type/>
+        <virtual_type>script</virtual_type>
         <widget/>
         <write_roles/>
         <xml_view>false</xml_view>

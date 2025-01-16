@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_object">
+    <sys_db_object action="DELETE">
+        <access>public</access>
+        <actions_access>false</actions_access>
+        <alter_access>false</alter_access>
+        <caller_access/>
+        <client_scripts_access>false</client_scripts_access>
+        <configuration_access>false</configuration_access>
+        <create_access>false</create_access>
+        <create_access_controls>false</create_access_controls>
+        <delete_access>false</delete_access>
+        <is_extendable>false</is_extendable>
+        <label>Task Poll INT Incident</label>
+        <live_feed_enabled>false</live_feed_enabled>
+        <name>x_376096_tpoll_task_poll_int_incident</name>
+        <number_ref/>
+        <provider_class/>
+        <read_access>true</read_access>
+        <scriptable_table>false</scriptable_table>
+        <super_class display_value="Import Set Row" name="sys_import_set_row">42cf07e0dc1212104f34465061b06a2d</super_class>
+        <sys_class_name>sys_db_object</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-12-12 15:59:02</sys_created_on>
+        <sys_id>722eacff8316d21089f6c8a6feaad368</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Task Poll INT Incident</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>sys_db_object_722eacff8316d21089f6c8a6feaad368</sys_update_name>
+        <sys_updated_by>markus.kraus</sys_updated_by>
+        <sys_updated_on>2025-01-15 07:30:19</sys_updated_on>
+        <update_access>false</update_access>
+        <user_role/>
+        <ws_access>true</ws_access>
+    </sys_db_object>
+<sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</application>
+        <comments/>
+        <file_path/>
+        <instance_id>fef3bf46fd4ec5c4bc668279a1340be4</instance_id>
+        <instance_name>beitsmsentw</instance_name>
+        <name>sys_db_object_722eacff8316d21089f6c8a6feaad368</name>
+        <order/>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_object">
+    <sys_db_object action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <actions_access>false</actions_access>
+        <alter_access>false</alter_access>
+        <caller_access/>
+        <client_scripts_access>false</client_scripts_access>
+        <configuration_access>false</configuration_access>
+        <create_access>false</create_access>
+        <create_access_controls>false</create_access_controls>
+        <delete_access>false</delete_access>
+        <is_extendable>false</is_extendable>
+        <label>Task Poll INT Incident</label>
+        <live_feed_enabled>false</live_feed_enabled>
+        <name>x_376096_tpoll_task_poll_int_incident</name>
+        <number_ref/>
+        <provider_class/>
+        <read_access>true</read_access>
+        <scriptable_table>false</scriptable_table>
+        <super_class display_value="Import Set Row" name="sys_import_set_row">42cf07e0dc1212104f34465061b06a2d</super_class>
+        <sys_class_name>sys_db_object</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-12-12 15:59:02</sys_created_on>
+        <sys_id>722eacff8316d21089f6c8a6feaad368</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Task Poll INT Incident</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>sys_db_object_722eacff8316d21089f6c8a6feaad368</sys_update_name>
+        <sys_updated_by>markus.kraus</sys_updated_by>
+        <sys_updated_on>2025-01-15 07:30:19</sys_updated_on>
+        <update_access>false</update_access>
+        <user_role/>
+        <ws_access>true</ws_access>
+    </sys_db_object>
+</record_update>]]></payload>
+        <payload_hash>-94809299</payload_hash>
+        <record_name>Task Poll INT Incident</record_name>
+        <reverted_from/>
+        <source>2d6316aa87cb1e108b4c31930cbb356e</source>
+        <source_table>sys_upgrade_history</source_table>
+        <state>previous</state>
+        <sys_created_by>Keri.Csaba</sys_created_by>
+        <sys_created_on>2025-01-15 08:56:04</sys_created_on>
+        <sys_id>2a6356aa87cb1e108b4c31930cbb3571</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>194692d4d740000001</sys_recorded_at>
+        <sys_updated_by>Keri.Csaba</sys_updated_by>
+        <sys_updated_on>2025-01-15 08:56:04</sys_updated_on>
+        <type>Table</type>
+        <update_guid>266356aa20cb1e1039192d7de742de71</update_guid>
+        <update_guid_history>266356aa20cb1e1039192d7de742de71:0,ae6356aa18cb1e1045026e3f8c17ad61:-957173878</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>markus.kraus</sys_created_by>
+        <sys_created_on>2025-01-16 13:09:23</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_db_object display_value="" name="sys_db_object">sys_db_object</sys_db_object>
+        <sys_id>7d603350852a4bf8b7f98d566f806c40</sys_id>
+        <sys_metadata>722eacff8316d21089f6c8a6feaad368</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Task Poll INT Incident</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_scope_delete display_value="">8bc7187944fb441dbee622f3f0632e99</sys_scope_delete>
+        <sys_update_name>sys_db_object_722eacff8316d21089f6c8a6feaad368</sys_update_name>
+        <sys_update_version display_value="sys_db_object_722eacff8316d21089f6c8a6feaad368">2a6356aa87cb1e108b4c31930cbb3571</sys_update_version>
+        <sys_updated_by>markus.kraus</sys_updated_by>
+        <sys_updated_on>2025-01-16 13:09:23</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

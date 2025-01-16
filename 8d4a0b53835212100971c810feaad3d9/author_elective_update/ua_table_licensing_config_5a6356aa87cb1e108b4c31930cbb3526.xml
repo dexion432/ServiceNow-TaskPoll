@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="ua_table_licensing_config">
+    <ua_table_licensing_config action="DELETE">
+        <is_fulfillment>false</is_fulfillment>
+        <license_condition/>
+        <license_model>none</license_model>
+        <license_roles/>
+        <name>x_376096_tpoll_task_poll_int_incident</name>
+        <op_delete>true</op_delete>
+        <op_insert>true</op_insert>
+        <op_update>true</op_update>
+        <owner_condition/>
+        <sys_class_name>ua_table_licensing_config</sys_class_name>
+        <sys_created_by>Keri.Csaba</sys_created_by>
+        <sys_created_on>2025-01-15 08:56:02</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>5a6356aa87cb1e108b4c31930cbb3526</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_376096_tpoll_task_poll_int_incident</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_update_name>ua_table_licensing_config_5a6356aa87cb1e108b4c31930cbb3526</sys_update_name>
+        <sys_updated_by>Keri.Csaba</sys_updated_by>
+        <sys_updated_on>2025-01-15 08:56:02</sys_updated_on>
+    </ua_table_licensing_config>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</application>
+        <comments/>
+        <file_path/>
+        <instance_id>fef3bf46fd4ec5c4bc668279a1340be4</instance_id>
+        <instance_name>beitsmsentw</instance_name>
+        <name>ua_table_licensing_config_5a6356aa87cb1e108b4c31930cbb3526</name>
+        <order/>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="ua_table_licensing_config"><ua_table_licensing_config action="INSERT_OR_UPDATE"><is_fulfillment>false</is_fulfillment><license_condition/><license_model>none</license_model><license_roles/><name>x_376096_tpoll_task_poll_int_incident</name><op_delete>true</op_delete><op_insert>true</op_insert><op_update>true</op_update><owner_condition/><sys_class_name>ua_table_licensing_config</sys_class_name><sys_created_by>Keri.Csaba</sys_created_by><sys_created_on>2025-01-15 08:56:02</sys_created_on><sys_customer_update>false</sys_customer_update><sys_id>5a6356aa87cb1e108b4c31930cbb3526</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_376096_tpoll_task_poll_int_incident</sys_name><sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package><sys_policy/><sys_replace_on_upgrade>false</sys_replace_on_upgrade><sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope><sys_update_name>ua_table_licensing_config_5a6356aa87cb1e108b4c31930cbb3526</sys_update_name><sys_updated_by>Keri.Csaba</sys_updated_by><sys_updated_on>2025-01-15 08:56:02</sys_updated_on></ua_table_licensing_config></record_update>]]></payload>
+        <payload_hash>1115085415</payload_hash>
+        <record_name>x_376096_tpoll_task_poll_int_incident</record_name>
+        <reverted_from/>
+        <source>bb0549318722121063b143f30cbb3517</source>
+        <source_table>sys_upgrade_history</source_table>
+        <state>previous</state>
+        <sys_created_by/>
+        <sys_created_on>2024-12-18 22:46:54</sys_created_on>
+        <sys_id>d0731aaa87cb1e108b4c31930cbb3555</sys_id>
+        <sys_mod_count/>
+        <sys_recorded_at>193dbf3e3300000000</sys_recorded_at>
+        <sys_updated_by/>
+        <sys_updated_on/>
+        <type>Table Subscription Configuration</type>
+        <update_guid>90731aaa72cb1e1059a8daf225ee4455</update_guid>
+        <update_guid_history>90731aaa72cb1e1059a8daf225ee4455:1115085415</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-16 13:09:44</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_db_object display_value="" name="ua_table_licensing_config">ua_table_licensing_config</sys_db_object>
+        <sys_id>12da0142cf51458984854ca4fea46879</sys_id>
+        <sys_metadata>5a6356aa87cb1e108b4c31930cbb3526</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_376096_tpoll_task_poll_int_incident</sys_name>
+        <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
+        <sys_scope_delete display_value="">8bc7187944fb441dbee622f3f0632e99</sys_scope_delete>
+        <sys_update_name>ua_table_licensing_config_5a6356aa87cb1e108b4c31930cbb3526</sys_update_name>
+        <sys_update_version display_value="ua_table_licensing_config_5a6356aa87cb1e108b4c31930cbb3526">d0731aaa87cb1e108b4c31930cbb3555</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-16 13:09:44</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

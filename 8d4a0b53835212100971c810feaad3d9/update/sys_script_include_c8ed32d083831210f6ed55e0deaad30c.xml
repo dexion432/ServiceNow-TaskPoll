@@ -7,6 +7,9 @@
         <client_callable>false</client_callable>
         <description>TODO für 15.01: &#13;
 1.) basic API per background script verifizieren: this._request in verbindung mit this._prepareTableAPI auf eine instanz der wahl&#13;
+   a) auth mechanismus verifizieren&#13;
+   b) batch api verifzieren &#13;
+   c) callbacks verifizieren &#13;
 2.) den m2m lookup generalisieren (single function)&#13;
 3.) import set erstellung: d.h. importset erzeugen und inserts in the tpoll incident tabelle machen&#13;
 </description>
@@ -14,511 +17,387 @@
         <name>PollUtil</name>
         <sandbox_callable>false</sandbox_callable>
         <script><![CDATA[/* global Class, gs, sn_cc, sn_ws, x_376096_tpoll */
-/* global GlideRecord, GlideDateTime */
+/* global GlideRecord, GlideDateTime, GlideImportSetTransformer */
 /* eslint no-undef: "error" */
 var PollUtil = Class.create();
-PollUtil.syncAll = function() {
-    const aliasGr = new GlideRecord('sys_alias');
-    aliasGr.addQuery('parent.id', 'x_376096_tpoll.tpoll');
-    aliasGr.query();
-    while (aliasGr.next()) {
-        const pollUtil = new x_376096_tpoll.PollUtil(aliasGr.getUniqueValue());
-        /*
-        const incidents = pollUtil.getRecords({
-        	table: 'incident'
-        });
-
-        gs.info('CSK incidzents' + JSON.stringify(incidents) );
-        */
-
-        gs.info("CSK items" + JSON.stringify(pollUtil.getItems()));
-
-
-        /*https://dev288390.service-now.com/images/icons/save.gifx
-        		var importSet = new GlideRecord('sys_import_set');
-        		importSet.short_description = 'Import set from scripted rest api';
-        		importSet.table_name = importSetTableName;
-        		var importSetID = importSet.insert();
-        		var transformMapId = '<sys id of transform map>';
-        		var transformer = new GlideImportSetTransformer();
-        		transformer.setMapID(transformMapId);
-        		transformer.transformAllMaps(importSet);
-        		*/
-    }
-};
 PollUtil.prototype = {
+	transform: function (importSetGr, transformMaps) {
+		const transformer = new GlideImportSetTransformer();
+		for (let i = 0; i < transformMaps.length; i++) {
+			transformer.setMapID(transformMaps[i]);
+		}
+		transformer.transformAllMaps(importSetGr);
+	},
+	createImportRows: function (incidents) {
+		const importSetGr = new GlideRecord('sys_import_set');
+		importSetGr.short_description = this.connAliasSysID;
+		importSetGr.table_name = 'x_376096_tpoll_int_incident';
+		importSetGr.state = 'loading';
+		const importSetID = importSetGr.insert();
 
-    createImportRows: function(incidents) {
-        /*
-<x_376096_tpoll_task_poll_int_incident>
-<import_set_run display_value="Transform History1808914">b0dc6fee87435e108b4c31930cbb3578</import_set_run>
-<source/>
-...
-<sys_transform_map display_value="Task Poll INT Incident Transform">d72eecff8316d21089f6c8a6feaad323</sys_transform_map>
-<u_attachments/>
-<u_comments/>
-<u_description/>
-<u_impact/>
-<u_number>test1</u_number>
-<u_priority/>
-<u_remote_sys_id/>
-<u_short_description/>
-<u_state/>
-<u_urgency/>
-<u_work_notes/>
-<x_376096_tpoll_m2m_id/>
-</x_376096_tpoll_task_poll_int_incident>
-*/
-	Object.keys(incidents).forEach(remoteIncSysId => {
-		let inc = incidents[remoteIncSysId];
-		let remoteInc = inc.remote_incident;
-		let importRowGr = new GlideRecord('x_376096_tpoll_task_poll_int_incident');
+		Object.values(incidents).forEach(data => {
+			let importRowGr = new GlideRecord('x_376096_tpoll_int_incident');
+			importRowGr.newRecord();
+			importRowGr.sys_import_set = importSetID;
+			importRowGr.remote_sys_id = data.remote_incident.sys_id;
+			importRowGr.source = this.connAliasSysID;
 
-		let comments = remoteInc.comments ?? [];
-		let workNotes = remoteInc.work_notes ?? [];
-		let attachments = remoteInc.attachments ?? [];
+			const vecFields = ['attachment', 'comments', 'work_notes'];
+			vecFields.forEach(name => importRowGr['u_' + name] = JSON.stringify(data.remote_incident[name] || []));
 
-		let remoteIncTasks = inc.incident_task;
-		remoteIncTasks.forEach(remoteIncTask => {
-			comments.forEach( c => comments.push(c));
-			workNotes.forEach( c => workNotes.push(c));
-			attachments.forEach( c => attachments.push(c));
+			for (const [remoteField, localField] of Object.entries(this._remote2localFields)) {
+				importRowGr[localField] = remoteField;
+			}
+
+			importRowGr.insert();
 		});
 
-		importRowGr.initialize();
-		importRowGr.u_attachments = attachments.join('|');
-		importRowGr.u_comments = comments.join('|');
-		importRowGr.u_description = remoteInc.description;
-		importRowGr.u_impact = remoteInc.impact;
-		importRowGr.u_number = remoteInc.number;
-		importRowGr.u_priority = remoteInc.priority;
-		importRowGr.u_remote_sys_id = remoteInc.sys_id;
-		importRowGr.u_short_description = remoteInc.short_description;
-		importRowGr.u_state = remoteInc.state;
-		importRowGr.u_urgency = remoteInc.urgency;
-		importRowGr.u_work_notes = workNotes.join('|');
+		importSetGr.state = 'loaded';
+		importSetGr.update();
+	},
+	getLastUpdateTime: function () {
+		return this._lastUpdatedTime;
+	},
+	syncIncidents: function () {
+		const lastUpdateTime = this.getLastUpdateTime();
 
-		importRowGr.insert();
-
-	});
-
-    },
-    getLastUpdateTime: function() {
-        return this._lastUpdatedTime;
-    },
-    syncIncidents: function() {
-        const lastUpdateTime = this.getLastUpdateTime();
-
-        const incidents = {
-            /*
-            "<remote incident sys id>": {
-            	remote_incident: {
-            		sys_id: "remote inc sys_id",
-            		short_description: "remote inc short description",
-            		description: "remote inc description",
-            		state: 5,
-            		comments: [],
-            		work_notes: [],
-            		attachments: [] 
-            	},
-            	incident_task: [{
-            		sys_id: "remote inc sys_id",
-            		work_notes: [],
-            		comments: [{
-            			sys_created_by: "remote user_name",
-            			value: "comment or work note"
-            		}],
-            		attachments: []
-            	}]
-            }*/
-        };
-        this._request([
-            // get incident status updates (because we have read access to closed incident_tasks) and private communications
-            this._prepareTableAPI({
-                table: 'incident_task',
-                query: 'sys_updated_on>=' + lastUpdateTime,
-                fields: ['sys_id', 'state', 'incident', 'incident.state'],
-                callback: (resp) => {
-                    // process all known incident tasks
-                    resp.result.forEach(incTask => {
-                        if (incTask.incident) {
-                            incidents[incTask.incident] ??= {
-                                remote_incident: {
-                                    state: incTask['incident.state'],
-                                    sys_id: incTask['incident'],
-                                    comments: [],
-                                    work_notes: [],
-                                    attachments: []
-                                },
-                                incident_task: []
-                            };
-
-                            incidents[incTask.incident].incident_task.push(incTask);
-                        } else {
-                            const m2mID = this._getM2m(incTask.sys_id);
-                            if (m2mID.next()) {
-                                if (m2mID.metadata.remote_incident) {
-                                    incidents[m2mID.metadata.remote_incident] ??= {
-                                        remote_incident: {
-                                            // the remote incident task was unable to read the incident state - this identifies closed incidents
-                                            state: null
-                                        },
-                                        incident_task: []
-                                    };
-
-                                    incidents[incTask.incident].incident_task.push(incTask);
-                                } else {
-                                    // we have seen the incident task but not the incident itself? edge case: create an incident
-                                    // the inc could be created during transformation as well 
-                                    // but here is easier to save the inc sys_id into the m2m local_id
-                                    // MKR: the transform could very well decide not to create incidents, but cases instead
-                                    /*
-                                    const incGr = new GlideRecord('incident');
-                                    incGr.initialize();
-                                    incGr.insert();
-
-                                    m2mID.local_id = incGr.sys_id;
-                                    m2mID.update();
-									*/
-
-                                    incidents[incTask.incident].incident_task.push(incTask);
-                                }
-                            } else {
-                                // inc task has not yet been seen, but we have no access to the inc => ignore the incident as the service desk has nothing to handle
-                            }
-                        }
-                    });
-                }
-            }),
-            this._prepareTableAPI({
-                table: 'incident',
-                // get all incident which have been either updated since we last synced, or for which a incident_task we can read was created retrospectively
-                query: 'sys_updated_on>=' + lastUpdateTime + '^NQsys_updated_on<' + lastUpdateTime + '^RLQUERYincident_task.incident,=1^sys_created_on>=' + lastUpdateTime,
-                fields: ['sys_id', 'state', 'impact', 'number', 'priority', 'short_description', 'description', 'urgency'],
-                callback: (resp) => {
-                    resp.result.forEach(inc => {
-                        /*
-                        // MKR: entfernt, wir dürfen an dieser stelle weder m2m noch inc/inc task erstellen
-                        // es ist die aufgabe der transform map das zu machen
-                        // die einzige annahme die wir vom transform layer haben ist, dass local ein task-type erzeugt wird
-                        // und dass das daten-interface der m2m respektiert wird
-						const m2mID = this._getM2m('incident|' + inc.sys_id);
-
-                        if (!m2mID.next()) {
-                        	// new incident, create and record into the m2m table
-                        	const incGr = new GlideRecord('incident');
-                        	incGr.initialize();
-                        	incGr.insert();
-
-                        	const newM2mID = new GlideRecord('x_376096_tpoll_m2m_id');
-                        	newM2mID.remote_id = 'incident|' + inc.sys_id;
-                        	newM2mID.local_id = incGr.sys_id.toString();
-                        	newM2mID.insert();
-                        }*/
-                        incidents[inc.sys_id.toString()] ??= {
-                            remote_incident: {
-                                sys_id: inc.sys_id,
-                                state: inc.state,
-                                short_description: inc.short_description,
-                                description: inc.description,
-                                comments: [],
-                                work_notes: [],
-                                attachments: []
-                            },
-                            incident_task: []
-                        };
-
-                    });
-                }
-            }),
-            this._prepareTableAPI({
-                table: 'incident',
-                // get all incident which have been either updated since we last synced, or for which a incident_task we can read was created retrospectively
-                query: 'sys_updated_on<' + lastUpdateTime + '^RLQUERYincident_task.incident,=1^sys_created_on>=' + lastUpdateTime,
-                fields: ['sys_id', 'state'],
-                callback: (resp) => {
-                    resp.result.forEach(remoteInc => {
-                        /*
-                        // MKR: auskommentiert da wir hier keine transform logic machen.
-                        // wir dürfen an dieser stelle auch keine insert in die m2m machen, denn die dürfen nur passieren
-                        // wenn die transform map sich entschieden hat einen incident/inc task / case / ... zu erstellen
-						const m2mID = this._getM2m('incident|' + inc.sys_id);
-                        if (!m2mID.next()) {
-                        	// new incident, create and record into the m2m table
-                        	const incGr = new GlideRecord('incident');
-                        	incGr.initialize();
-                        	incGr.insert();
-
-                        	const newM2mID = new GlideRecord('x_376096_tpoll_m2m_id');
-                        	newM2mID.remote_id = inc.sys_id;
-                        	newM2mID.local_id = incGr.sys_id.toString();
-                        	newM2mID.insert();
-                        }*/
-                        incidents[remoteInc.sys_id.toString()] ??= {
-                            remote_incident: {
-                                sys_id: remoteInc.sys_id,
-                                state: remoteInc.state,
-                                short_description: remoteInc.short_description,
-                                description: remoteInc.description,
-                                comments: [],
-                                work_notes: [],
-                                attachments: []
-                            },
-                            incident_task: []
-                        };
-
-                    });
-                }
-            }),
-            this._prepareTableAPI({
-                table: 'sys_journal_field',
-                query: 'name=incident^ORname=incident_task^sys_created_on>=' + lastUpdateTime,
-                fields: ['sys_id', 'element_id', 'value', 'name'],
-                callback: (resp) => {
-                    resp.result.forEach(journal => {
-                        var externalInc = incidents[journal.element_id];
-                        if (externalInc) {
-                            externalInc.remote_incident.work_notes.push(journal.value);
-                        }
-                    });
-                }
-            }),
-            this._prepareTableAPI({
-                table: 'sys_attachment',
-                query: 'table_name=incident^ORtable_name=incident_task^sys_created_on>=' + lastUpdateTime,
-                fields: ['table_name', 'sys_id', 'table_sys_id', 'file_name', 'size_bytes'],
-                callback: (resp) => {
-                    resp.result.forEach(att => {
-                        if (att.table_name == 'incident') {
-                            const externalIncForJournal = incidents[att.table_sys_id];
-                            if (externalIncForJournal) {
-                                externalIncForJournal.remote_incident.attachments.push({
-                                    table: att.table_name,
-                                    sys_id: att.sys_id,
-                                    fileName: att.file_name
-                                });
-                            }
-                        } else if (att.table_name == 'incident_task') {
-                            // an external incident_task is always synced into the local task
-                            const m2mID = this._getM2m(att.table_sys_id);
-                            if (m2mID.next()) {
-                                const externalIncForAtt = incidents[m2mID.metdata.remote_incident];
-                                if (externalIncForAtt) {
-                                    externalIncForAtt.remote_incident.attachments.push({
-                                        table: att.table_name,
-                                        sys_id: att.sys_id,
-                                        fileName: att.file_name
-                                    });
-                                }
-                                /*const m2mID2 = new GlideRecord('x_376096_tpoll_m2m_id');
-                                m2mID2.addQuery('remote_id', 'incident|' + m2mID2.remote_id.toString().substring('incident_task|'.length));
-                                m2mID2.orderByDesc('sys_created_on');
-                                m2mID2.setLimit(1);
-                                m2mID2.query();
-                                if (m2mID2.next()) {
-                                	const externalIncForAtt = incidents[m2mID2.remote_id.toString().substring('incident|'.length)];
-                                	if (externalIncForAtt) {
-                                		externalIncForAtt.remote_incident.attachments.push({
-                                			table: att.table_name,
-                                			sys_id: att.sys_id,
-                                			fileName: att.file_name
-                                		});
-                                	}
-                                }*/
-                            }
-                        }
-                    });
-                }
-            })
-        ]);
-
-        gs.info(JSON.stringify(incidents, null, 2));
+		const incidents = {
+			/*
+			"<remote incident sys id>": {
+				remote_incident: {
+					sys_id: "remote inc sys_id",
+					short_description: "remote inc short description",
+					description: "remote inc description",
+					state: 5,
+					comments: [],
+					work_notes: [],
+					attachments: [] 
+				},
+				incident_tasks: [{
+					sys_id: "remote inc sys_id",
+					work_notes: [],
+					comments: [{
+						sys_created_by: "remote user_name",
+						value: "comment or work note"
+					}],
+					attachments: []
+				}]
+			}*/
+		};
+		this._request([
+			// get incident status updates (because we have read access to closed incident_tasks) and private communications
+			this._processIncidentTasks(lastUpdateTime, incidents),
+			this._processUpdatedIncidents(lastUpdateTime, incidents),
+			this._processJournalFields(lastUpdateTime, incidents),
+			this._processAttachments(lastUpdateTime, incidents)
+		]);
 
 		this.createImportRows(incidents);
-    },
-    _getM2m: function(remoteId) {
-        const m2mID = new GlideRecord('x_376096_tpoll_m2m_id');
-        m2mID.addQuery('remote_id', remoteId);
-        m2mID.orderByDesc('sys_created_on');
-        m2mID.setLimit(1);
-        m2mID.query();
-        return m2mID;
-    },
-    initialize: function(connAliasSysID) {
-        const importRowGr = new GlideRecord('x_376096_tpoll_task_poll_int_incident');
-        importRowGr.addQuery('x_376096_tpoll_m2m_id', connAliasSysID);
-        importRowGr.orderByDesc('sys_updated_on');
-        importRowGr.setLimit(1);
-        if (importRowGr.next()) {
-            this._lastUpdatedTime = new GlideDateTime(importRowGr.sys_updated_on);
-        } else {
-            this._lastUpdatedTime = new GlideDateTime('1970-01-01 00:00:00');
-        }
+	},
+	_processIncidentTasks: function (lastUpdatedTime, cache) {
+		// detects new incidents
+		// detects closed incidents (when incidents can no longer be read)
+		// handles private communication
+		return this._prepareTableAPI({
+			table: 'incident_task',
+			query: this._incidentTaskFilter + '^sys_updated_on>=' + lastUpdatedTime,
+			fields: ['sys_id', 'state', 'incident', 'incident.state'],
+			callback: (resp) => {
+				// process all known incident tasks
+				resp.result.forEach(incTask => {
+					const remoteInc = this._getRemoteIncident(incTask.incident || incTask.sys_id, incTask.incident ? 'incident' : 'incident_task');
+					const incident = cache[remoteInc] ??= {
+						remote_incident: {
+							state: incTask['incident.state'],
+							sys_id: incTask['incident']
+						}
+					};
 
-        this.connAliasSysID = connAliasSysID;
-        this.connInfo = new sn_cc.ConnectionInfoProvider().getConnectionInfo(connAliasSysID);
-        this.connURL = this.connInfo.getAttribute('connection_url');
-        if (!this.connURL.endsWith('/')) {
-            this.connURL += '/';
-        }
+					if (incTask.incident) {
+						incident.state = incTask['incident.state'];
+					} else {
+						// if the incident is no longer readable, the incident must be considered can be considered closed
+						incident.state = null;
+					}
+				});
+			}
+		});
+	},
+	_processUpdatedIncidents: function (lastUpdatedTime, cache) {
+		return this._prepareTableAPI({
+			table: 'incident',
+			// get all incident which have been either updated since we last synced, or for which a incident_task we can read was created retrospectively
+			query: 'sys_updated_on>=' + lastUpdatedTime + '^NQsys_updated_on<' + lastUpdatedTime + '^RLQUERYincident_task.incident,>0^sys_updated_on>=' + lastUpdatedTime,
+			fields: Object.keys(this._remote2localFields),
+			callback: (resp) => {
+				resp.result.forEach(remoteInc => {
+					gs.info(remoteInc['number']);
+					const data = cache[remoteInc.sys_id] ??= {
+						remote_incident: remoteInc
+					};
 
-        const type = this.connInfo.getCredentialAttribute('type');
-        if (type == 'oauth_2_0') {
-            const credSysID = this.connInfo.getCredentialAttribute('sys_id');
-            const profileGr = new GlideRecord('oauth_requestor_profile');
-            profileGr.addQuery('requestor_context', 'oauth_2_0_credentials');
-            profileGr.addQuery('requestor_id', credSysID);
-            profileGr.setLimit(1);
-            profileGr.query();
-            if (profileGr.next()) {
-                const oAuthInfo = {
-                    authenticationProfile: {
-                        type: 'oauth2',
-                        profileId: profileGr.getValue('oauth_entity_profile')
-                    },
-                    requestorProfile: {
-                        requestorContext: 'oauth_2_0_credentials',
-                        requestorId: credSysID
-                    }
-                };
+					// override potential incomplete value from incident_task callback
+					data.remote_incident = remoteInc;
+				});
+			}
+		});
+	},
+	_processJournalFields: function (lastUpdatedTime, cache) {
+		return this._prepareTableAPI({
+			table: 'sys_journal_field',
+			// TODO: hier ist der retrospective task assignment nicht berücksichtigt, es braucht noche eine RLQUERY?
+			// beispiel: wenn ich einen INC gestern eröffnet habe aber noch nicht bedag zugewiesen habe,
+			// dann einige updates auf bestehenden INCs mache (d.h. lastUpdateTime == *heute*)
+			// und *heute* den INC erst an bedag zuweise (indem ich einen inc task erstelle),
+			// dann würde diese query nur diejenigen journal fields abfragen die seite *heute* erstellt wurden
 
-                this._authReq = function(req) {
-                    req.setAuthenticationProfile(oAuthInfo.authenticationProfile.type, oAuthInfo.authenticationProfile.profileId);
-                    if (oAuthInfo.requestorProfile) {
-                        req.setRequestorProfile(this.authInfo.requestorProfile.requestorContext, this.authInfo.requestorProfile.requestorId);
-                    }
-                };
-            }
-        } else if (type == 'basic_auth') {
-            const basicAuthInfo = {
-                username: this.connInfo.getCredentialAttribute('user_name'),
-                password: this.connInfo.getCredentialAttribute('password')
-            };
+			// name=incident^ORname=incident_task^sys_created_on>=javascript:gs.dateGenerate('2024-10-27','00:00:00')
+			query: 'name=incident^ORname=incident_task^sys_created_on>=' + lastUpdatedTime + '^ORDERBYsys_created_on',
+			fields: ['sys_id', 'element', 'element_id', 'value', 'name', 'sys_created_by'],
+			callback: (resp) => {
+				resp.result.forEach(journal => {
+					var remoteInc = cache[this._getRemoteIncident(journal['element_id'],journal['name'] )];
+					if (remoteInc) {
+						(remoteInc.remote_incident[journal.element] ??= []).push(journal);
+					} else {
+						// most likely an ACL missconfiguration because we can read an attachment for
+						// incident or incident_task which we have not (and will not - at least in this execution)
+						// synced yet
+					}
+				});
+			}
+		});
+	},
+	_processAttachments: function (lastUpdatedTime, cache) {
+		return this._prepareTableAPI({
+			table: 'sys_attachment',
+			// TODO: gleiches problem hier mit retrospektivisch zugewiesenen INCs
+			query: 'table_name=incident^ORtable_name=incident_task^sys_updated_on>=' + lastUpdatedTime,
+			fields: ['table_name', 'sys_id', 'table_sys_id', 'file_name', 'size_bytes', 'content_type', 'hash'],
+			callback: (resp) => {
+				resp.result.forEach(remoteAtt => {
+					var remoteInc = cache[this._getRemoteIncident(remoteAtt['table_sys_id'],remoteAtt['table_name'] )];
+					if (remoteInc) {
+						(remoteInc.attachments ??= []).push(remoteAtt);
+					} else {
+						// most likely an ACL missconfiguration because we can read an attachment for
+						// incident or incident_task which we have not (and will not - at least in this execution)
+						// synced yet
+					}
+				});
+			}
+		});
+	},
+	_getRemoteIncident: function (remoteTaskSysID, remoteTaskTable) {
+		if (remoteTaskTable == 'incident') {
+			return remoteTaskSysID;
+		}
 
-            this._authReq = function(req) {
-                req.setBasicAuth(basicAuthInfo.username, basicAuthInfo.password);
-            };
-        } else if (type == 'api_key') {
-            const apiKey = this.connInfo.getCredentialAttribute('api_key');
-            this._authReq = function(req) {
-                req.setRequestHeader('Authorization', 'Bearer ' + apiKey);
-            };
-        }
+		const m2mID = new GlideRecord('x_376096_tpoll_m2m_id');
+		m2mID.addQuery('remote_id', remoteTaskSysID);
+		m2mID.orderByDesc('sys_created_on');
+		m2mID.setLimit(1);
+		m2mID.query();
+		if (m2mID.next()) {
+			return m2mID.metadata.remote_incident;
+		}
+	},
+	initialize: function (connAliasSysID) {
+		const importRowGr = new GlideRecord('x_376096_tpoll_int_incident');
+		importRowGr.addQuery('x_376096_tpoll_m2m_id', connAliasSysID);
+		importRowGr.orderByDesc('sys_updated_on');
+		importRowGr.setLimit(1);
+		if (importRowGr.next()) {
+			this._lastUpdatedTime = new GlideDateTime(importRowGr.sys_updated_on);
+		} else {
+			this._lastUpdatedTime = new GlideDateTime('1970-01-01 00:00:00');
+		}
 
-        if (!this._authReq) {
-            throw new Error('Unhandled or incomplete credential: ' + type);
-        }
-    },
+		this.connAliasSysID = connAliasSysID;
+		this.connInfo = new sn_cc.ConnectionInfoProvider().getConnectionInfo(connAliasSysID);
+		this.connURL = this.connInfo.getAttribute('connection_url');
+		if (!this.connURL.endsWith('/')) {
+			this.connURL += '/';
+		}
 
-    /**
-     * @param {{
-     * 	headers: object<string,string>[],
-     *  url: string, 
-     *  method: 'get'|'post'|'put'
-     * }[]} preparedRequests
-     */
-    _request: function(preparedRequests) {
-        // prepare for batch api
-        for (let i = 0; i < preparedRequests.length; i++) {
-            const preparedReq = preparedRequests[i];
-            preparedReq.id = String(i + 1);
-            if (preparedReq.body) {
-                preparedReq.body = gs.base64Encode(preparedReq.body);
-            }
-        }
+		this._incidentTaskFilter = this.connInfo.getExtendedAttributes().u_incident_task_filter || 'assigned_toDYNAMIC90d1921e5f510100a9ad2572f2b477fe^ORassignment_groupDYNAMICd6435e965f510100a9ad2572f2b47744';
 
-        let req = new sn_ws.RESTMessageV2();
-        req.setEndpoint(this.connURL + 'api/now/v1/batch');
-        req.setHttpMethod('POST');
-        req.setRequestHeader('Accept', 'application/json');
-        req.setRequestHeader('Content-Type', 'application/json');
-        req.setRequestBody(JSON.stringify({
-            batch_request_id: "1",
-            rest_requests: preparedRequests
-        }));
+		this._remote2localFields = {
+			sys_id: "remote_sys_id"
+		};
+		const dictionaryGr = new GlideRecord('sys_dictionary');
+		dictionaryGr.addQuery('sys_id', 'IN', this.connInfo.getExtendedAttributes().u_pod_fields);
+		dictionaryGr.query();
+		while (dictionaryGr.next()) {
+			const column = dictionaryGr.element.toString();
+			const scope = dictionaryGr.sys_scope.scope.toString();
+			if (column.startsWith(scope)) {
+				// x_scopeid_fieldname => fieldname
+				this._remote2localFields[column.substring(scope.length + 1)] = column;
+			} else if (column.startsWith('u_')) {
+				this._remote2localFields[column.substring(2)] = column;
+			} else {
+				gs.error('Invalid remote2local field detected: ' + dictionaryGr.sys_id);
+			}
+		}
 
-        this._authReq(req);
-        const resp = req.execute();
-        if (resp.haveError()) {
-            return {
-                status: 'error',
-                message: resp.getErrorMessage(),
-                code: resp.getErrorCode()
-            };
-        }
+		const type = this.connInfo.getCredentialAttribute('type');
+		if (type == 'oauth_2_0') {
+			const credSysID = this.connInfo.getCredentialAttribute('sys_id');
+			const profileGr = new GlideRecord('oauth_requestor_profile');
+			profileGr.addQuery('requestor_context', 'oauth_2_0_credentials');
+			profileGr.addQuery('requestor_id', credSysID);
+			profileGr.setLimit(1);
+			profileGr.query();
+			if (profileGr.next()) {
+				const oAuthInfo = {
+					authenticationProfile: {
+						type: 'oauth2',
+						profileId: profileGr.getValue('oauth_entity_profile')
+					},
+					requestorProfile: {
+						requestorContext: 'oauth_2_0_credentials',
+						requestorId: credSysID
+					}
+				};
 
-        const requests = JSON.parse(resp.getBody()).serviced_requests;
-        for (let i = 0; i < preparedRequests.length; i++) {
-            const preparedReq = preparedRequests[i];
-            const reqResp = requests.find(req => req.id == preparedReq.id);
-            preparedReq?.callback(gs.base64Decode(reqResp.body));
-        }
+				this._authReq = function (req) {
+					req.setAuthenticationProfile(oAuthInfo.authenticationProfile.type, oAuthInfo.authenticationProfile.profileId);
+					if (oAuthInfo.requestorProfile) {
+						req.setRequestorProfile(this.authInfo.requestorProfile.requestorContext, this.authInfo.requestorProfile.requestorId);
+					}
+				};
+			}
+		} else if (type == 'basic_auth') {
+			const basicAuthInfo = {
+				username: this.connInfo.getCredentialAttribute('user_name'),
+				password: this.connInfo.getCredentialAttribute('password')
+			};
 
-        // TODO: handle <response>.unserviced
+			this._authReq = function (req) {
+				req.setBasicAuth(basicAuthInfo.username, basicAuthInfo.password);
+			};
+		} else if (type == 'api_key') {
+			const apiKey = this.connInfo.getCredentialAttribute('api_key');
+			this._authReq = function (req) {
+				req.setRequestHeader('x-sn-apikey', apiKey);
+			};
+		}
 
-        return {
-            status: 'success',
-            requests: requests
-        };
-    },
+		if (!this._authReq) {
+			throw new Error('Unhandled or incomplete credentials: ' + type);
+		}
+	},
 
-    _prepareTableAPI: function({
-        table,
-        query,
-        fields,
-        limit,
-        offset,
-        callback
-    }) {
-        const params = [];
-        if (query) {
-            params.push('sysparm_query=' + encodeURIComponent(query));
-        }
+	/**
+	 * @param {{
+	 * 	headers: object<string,string>[],
+	 *  url: string, 
+	 *  method: 'get'|'post'|'put'
+	 * }[]} preparedRequests
+	 */
+	_request: function (preparedRequests) {
+		// prepare for batch api
+		for (let i = 0; i < preparedRequests.length; i++) {
+			const preparedReq = preparedRequests[i];
+			preparedReq.id = String(i + 1);
+			if (preparedReq.body) {
+				preparedReq.body = gs.base64Encode(preparedReq.body);
+			}
+		}
 
-        if (limit) {
-            params.push('sysparm_limit=' + limit);
-        }
+		let req = new sn_ws.RESTMessageV2();
+		req.setEndpoint(this.connURL + 'api/now/v1/batch');
+		req.setHttpMethod('POST');
+		req.setRequestHeader('Accept', 'application/json');
+		req.setRequestHeader('Content-Type', 'application/json');
+		req.setRequestBody(JSON.stringify({
+			batch_request_id: '1',
+			rest_requests: preparedRequests
+		}));
 
-        if (offset) {
-            params.push('sysparm_offset=' + offset);
-        }
+		this._authReq(req);
+		const resp = req.execute();
+		if (resp.haveError()) {
+			return {
+				status: 'error',
+				message: resp.getErrorMessage(),
+				code: resp.getErrorCode()
+			};
+		}
 
-        if (fields?.length) {
-            params.push('sysparm_fields=' + encodeURIComponent(fields.join(',')));
-        }
+		const requests = JSON.parse(resp.getBody()).serviced_requests;
+		for (let i = 0; i < preparedRequests.length; i++) {
+			const preparedReq = preparedRequests[i];
+			const reqResp = requests.find(req => req.id == preparedReq.id);
+			preparedReq?.callback(reqResp.body_encoding == 'base64' ? gs.base64Decode(reqResp.body) : reqResp.body);
+		}
 
-        params.push('sysparm_exclude_reference_link=true');
+		// TODO: handle <response>.unserviced_requests
 
-        let url = 'api/now/table/' + table;
-        if (params.length) {
-            url += '?' + params.join('&');
-        }
+		return {
+			status: 'success',
+			requests: requests
+		};
+	},
 
-        return {
-            method: 'GET',
-            url: url,
-            headers: [{
-                name: 'Content-Type',
-                value: 'application/json'
-            }, {
-                name: 'Accept',
-                value: 'application/json'
-            }],
-            exclude_response_headers: true,
-            callback: function(strResult) {
-                return callback(JSON.parse(strResult));
-            }
-        };
-    },
+	_prepareTableAPI: function ({
+		table,
+		query,
+		fields,
+		limit,
+		offset,
+		callback
+	}) {
+		const params = [];
+		if (query) {
+			params.push('sysparm_query=' + encodeURIComponent(query));
+		}
 
-    type: 'PollUtil'
+		if (limit) {
+			params.push('sysparm_limit=' + limit);
+		}
+
+		if (offset) {
+			params.push('sysparm_offset=' + offset);
+		}
+
+		if (fields?.length) {
+			params.push('sysparm_fields=' + encodeURIComponent(fields.join(',')));
+		}
+
+		params.push('sysparm_exclude_reference_link=true');
+
+		let url = 'api/now/table/' + table;
+		if (params.length) {
+			url += '?' + params.join('&');
+		}
+
+		return {
+			method: 'GET',
+			url: url,
+			headers: [{
+				name: 'Content-Type',
+				value: 'application/json'
+			}, {
+				name: 'Accept',
+				value: 'application/json'
+			}],
+			exclude_response_headers: true,
+			callback: function (strResult) {
+				return callback(JSON.parse(strResult));
+			}
+		};
+	},
+
+	type: 'PollUtil'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>markus.kraus</sys_created_by>
         <sys_created_on>2025-01-08 12:55:10</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>c8ed32d083831210f6ed55e0deaad30c</sys_id>
-        <sys_mod_count>97</sys_mod_count>
+        <sys_mod_count>145</sys_mod_count>
         <sys_name>PollUtil</sys_name>
         <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
         <sys_policy/>
@@ -526,7 +405,7 @@ PollUtil.prototype = {
         <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
         <sys_update_name>sys_script_include_c8ed32d083831210f6ed55e0deaad30c</sys_update_name>
         <sys_updated_by>Keri.Csaba</sys_updated_by>
-        <sys_updated_on>2025-01-15 17:20:55</sys_updated_on>
+        <sys_updated_on>2025-01-16 15:01:08</sys_updated_on>
     </sys_script_include>
     <sys_es_latest_script action="INSERT_OR_UPDATE">
         <id>c8ed32d083831210f6ed55e0deaad30c</id>

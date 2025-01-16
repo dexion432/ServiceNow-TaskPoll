@@ -8,7 +8,7 @@
         <choice>0</choice>
         <choice_field/>
         <choice_table/>
-        <column_label>Local ID</column_label>
+        <column_label>Remote ID</column_label>
         <comments/>
         <create_roles/>
         <default_value/>
@@ -47,13 +47,15 @@
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>markus.kraus</sys_created_by>
         <sys_created_on>2025-01-08 12:21:23</sys_created_on>
-        <sys_name>Local ID</sys_name>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_name>Remote ID</sys_name>
         <sys_package display_value="Task Poll" source="x_376096_tpoll">8d4a0b53835212100971c810feaad3d9</sys_package>
         <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Task Poll">8d4a0b53835212100971c810feaad3d9</sys_scope>
         <sys_update_name>sys_dictionary_x_376096_tpoll_m2m_id_remote_id</sys_update_name>
-        <sys_updated_by>markus.kraus</sys_updated_by>
-        <sys_updated_on>2025-01-13 15:19:32</sys_updated_on>
+        <sys_updated_by>Keri.Csaba</sys_updated_by>
+        <sys_updated_on>2025-01-16 14:00:57</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

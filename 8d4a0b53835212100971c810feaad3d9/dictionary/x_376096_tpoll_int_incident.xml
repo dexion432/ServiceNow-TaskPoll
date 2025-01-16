@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="42f3f03287c75e108b4c31930cbb3585" extends="sys_import_set_row" label="INT Incident" max_length="40" name="x_376096_tpoll_int_incident" type="collection">
+        <element label="Impact" max_length="40" name="u_impact" type="integer"/>
+        <element label="Attachments (array)" max_length="4000" name="attachments" type="string"/>
+        <element label="Number" max_length="40" name="u_number" type="string"/>
+        <element label="Priority" max_length="40" name="u_priority" type="integer"/>
+        <element label="Source" max_length="32" name="source" reference="sys_alias" type="reference"/>
+        <element label="Tpoll m2m ID" max_length="32" name="x_376096_tpoll_m2m_id" reference="x_376096_tpoll_m2m_id" type="reference"/>
+        <element label="Work Notes (array)" max_length="16384" name="work_notes" type="string"/>
+        <element label="Comments (array)" max_length="16384" name="comments" type="string"/>
+        <element label="Urgency" max_length="40" name="u_urgency" type="integer"/>
+        <element label="Short Description" max_length="160" name="u_short_description" type="string"/>
+        <element label="Description" max_length="4000" name="u_description" type="string"/>
+        <element label="Remote Sys ID" max_length="32" name="remote_sys_id" type="string"/>
+        <index name="index">
+            <element name="source"/>
+        </index>
+        <index name="index2">
+            <element name="x_376096_tpoll_m2m_id"/>
+        </index>
+    </element>
+</database>
